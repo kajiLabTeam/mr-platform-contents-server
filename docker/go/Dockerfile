@@ -9,6 +9,6 @@ RUN apk upgrade --update && \
 WORKDIR /go/src/app/
 
 # ホストPCの[./src]フォルダーを[/go/src/app/]フォルダーにコピー
-ADD ./src .
+ADD ./mr-platform-contents-server/src .
 
 CMD ["go", "run", "main.go"]
