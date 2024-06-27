@@ -1,0 +1,1 @@
+# mr-platform-contents-server
