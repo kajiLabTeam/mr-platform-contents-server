@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/google/uuid"
-	"github.com/kajiLabTeam/mr-platform-digital-twin-server/common"
+	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 )
 
 func GetModel3dContent(contentId string) (common.Model3d, error) {

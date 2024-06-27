@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/google/uuid"
-	"github.com/kajiLabTeam/mr-platform-digital-twin-server/common"
+	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 )
 
 func GetHtml2dContent(contentId string) (common.Html2d, error) {

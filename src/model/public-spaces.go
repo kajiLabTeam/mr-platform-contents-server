@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/google/uuid"
-	"github.com/kajiLabTeam/mr-platform-digital-twin-server/common"
+	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 )
 
 func IsExistPublicSpaces(organizationId string) (bool, error) {

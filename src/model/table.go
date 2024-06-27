@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/kajiLabTeam/mr-platform-digital-twin-server/lib"
+	"github.com/kajiLabTeam/mr-platform-contents-server/lib"
 )
 
 var db = connectDB()
