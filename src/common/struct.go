@@ -24,8 +24,7 @@ type Size struct {
 }
 
 type PublicSpace struct {
-	LayerId        string `json:"id"`
-	OrganizationId string `json:"organizationId"`
+	LayerId string `json:"id"`
 }
 
 // ResponseGetContentsのときにはこれの配列を渡す
@@ -56,14 +55,10 @@ type RequestUpdateContent struct {
 }
 
 type RequestCreateLayer struct {
-	OrganizationId string `json:"organizationId"`
-}
-
-type ResponseCreateLayer struct {
 	LayerId string `json:"layerId"`
 }
 
-type RequestGetLayerContentIds struct {
+type ResponseCreateLayer struct {
 	LayerId string `json:"layerId"`
 }
 
