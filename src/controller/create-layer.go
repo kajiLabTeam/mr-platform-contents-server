@@ -17,17 +17,16 @@ func CreateLayer(c *gin.Context) {
 	}
 
 	// レイヤーを作成
-	layerId, err := model.CreateLayer(req.OrganizationId)
+	isCreated, err := model.CreateLayer(req.LayerId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	// レスポンスの作成
-	res := common.ResponseCreateLayer{
-		LayerId: layerId,
+	if !isCreated {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create layer"})
+		return
 	}
 
 	// 201を返す
-	c.JSON(http.StatusCreated, res)
+	c.JSON(http.StatusCreated, req)
 }
