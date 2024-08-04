@@ -7,29 +7,31 @@ import (
 	"github.com/kajiLabTeam/mr-platform-contents-server/model"
 )
 
-func GetContent(contentId string) (common.Content, error) {
+func GetContent(contentId string) (content common.Content, err error) {
 	contentType, err := getDataType(contentId)
 	if err != nil {
 		return common.Content{}, err
 	}
+	content = common.Content{
+		ContentId:   contentId,
+		ContentType: contentType,
+	}
 	switch contentType {
 	case "html2d":
-		content, err := getDataFromHtml2d(contentId)
+		html2dContent, err := getDataFromHtml2d(contentId)
 		if err != nil {
 			return common.Content{}, err
 		}
-		return common.Content{
-			ContentId:   contentId,
-			ContentType: contentType,
-			Content:     content,
-		}, nil
+		content.Content = html2dContent
 
 	default:
 		return common.Content{}, errors.New("invalid content type")
 	}
+
+	return content, nil
 }
 
-func getDataType(contentId string) (string, error) {
+func getDataType(contentId string) (contentType string, err error) {
 	// データが存在するか確認
 	isExist, err := model.IsExistContentId(contentId)
 	if err != nil {
@@ -39,7 +41,7 @@ func getDataType(contentId string) (string, error) {
 		return "", errors.New("contentId does not exist")
 	}
 
-	contentType, err := model.GetContentType(contentId)
+	contentType, err = model.GetContentType(contentId)
 	if err != nil {
 		return "", err
 	}
@@ -47,7 +49,7 @@ func getDataType(contentId string) (string, error) {
 	return contentType, nil
 }
 
-func getDataFromHtml2d(contentId string) (common.Html2d, error) {
+func getDataFromHtml2d(contentId string) (content common.Html2d, err error) {
 	// データが存在するか確認
 	isExist, err := model.IsExistContentId(contentId)
 	if err != nil {
@@ -58,13 +60,9 @@ func getDataFromHtml2d(contentId string) (common.Html2d, error) {
 	}
 
 	// SQLから取得 GetHtml2dContent
-	content, err := model.GetHtml2dContent(contentId)
+	content, err = model.GetHtml2dContent(contentId)
 	if err != nil {
 		return common.Html2d{}, err
-	}
-	// 構造体が空の場合はエラーを返す
-	if content == (common.Html2d{}) {
-		return common.Html2d{}, nil
 	}
 
 	return content, nil
