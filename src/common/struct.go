@@ -45,7 +45,9 @@ type RequestCreateContent struct {
 }
 
 type ResponseCreateContent struct {
-	ContentId string `json:"contentId"`
+	ContentId   string      `json:"contentId"`
+	ContentType string      `json:"contentType"`
+	Content     interface{} `json:"content"`
 }
 
 type RequestUpdateContent struct {

@@ -8,6 +8,7 @@ import (
 	"github.com/go-viper/mapstructure/v2"
 	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 	"github.com/kajiLabTeam/mr-platform-contents-server/model"
+	"github.com/kajiLabTeam/mr-platform-contents-server/util"
 )
 
 func CreateContent(c *gin.Context) {
@@ -29,28 +30,34 @@ func CreateContent(c *gin.Context) {
 		return
 	}
 
-	var res common.ResponseCreateContent
+	var contentId string
 
 	// type の確認
 	switch req.ContentType {
 	case "html2d":
-		contentId, err := createHtml2dContent(req)
+		contentId, err = createHtml2dContent(req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		res.ContentId = contentId
 
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid content type"})
 		return
 	}
 
+	// コンテンツの取得
+	content, err := util.GetContent(contentId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	// 201を返す
-	c.JSON(http.StatusCreated, res)
+	c.JSON(http.StatusCreated, content)
 }
 
-func createHtml2dContent(req common.RequestCreateContent) (string, error) {
+func createHtml2dContent(req common.RequestCreateContent) (contentId string, err error) {
 	// 同一コンテンツが存在するか確認
 	// html2dContent（common.Html2d）にreq.Content(Interface)を変換
 	var html2dContent common.Html2d
@@ -67,7 +74,7 @@ func createHtml2dContent(req common.RequestCreateContent) (string, error) {
 	}
 
 	// コンテンツを作成
-	contentId, err := model.CreateContent(req.ContentType)
+	contentId, err = model.CreateContent(req.ContentType)
 	if err != nil {
 		return "", err
 	}
