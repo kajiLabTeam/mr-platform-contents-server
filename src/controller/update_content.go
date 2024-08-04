@@ -55,11 +55,19 @@ func UpdateContent(c *gin.Context) {
 }
 
 func updateHtml2dContent(req common.RequestUpdateContent) (bool, error) {
-	// 同一コンテンツが存在するか確認
 	// html2dContent（common.Html2d）にreq.Content(Interface)を変換
 	var html2dContent common.Html2d
 	if err := mapstructure.Decode(req.Content, &html2dContent); err != nil {
 		return false, err
+	}
+
+	// コンテンツがあるか確認
+	isExist, err := model.IsExistHtml2dContent(req.ContentId)
+	if err != nil {
+		return false, err
+	}
+	if !isExist {
+		return false, errors.New("content does not exist")
 	}
 
 	// コンテンツを更新
