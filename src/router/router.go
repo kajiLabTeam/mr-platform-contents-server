@@ -23,7 +23,8 @@ func Init() {
 
 	r.POST("/api/layer/create", controller.CreateLayer)
 	r.POST("/api/content/create", controller.CreateContent)
-	r.GET("/api/contents", controller.GetContent)
+	r.GET("/api/contents", controller.GetContents)
+	r.PUT("/api/content/update", controller.UpdateContent)
 
 	// サーバーの起動状態を表示
 	if err := r.Run("0.0.0.0:8000"); err != nil {
