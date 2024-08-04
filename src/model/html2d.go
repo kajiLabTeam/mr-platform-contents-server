@@ -55,3 +55,11 @@ func IsExistHtml2dContentExceptId(checkContent common.Html2d) (bool, error) {
 	}
 	return true, nil
 }
+
+func UpdateHtml2dContent(contentId string, content common.Html2d) (bool, error) {
+	_, err := db.Exec("UPDATE html2d SET location_x = $1, location_y = $2, location_z = $3, rotation_roll = $4, rotation_pitch = $5, rotation_yaw = $6, size_width = $7, size_height = $8, text_type = $9, text_url = $10, style_url = $11 WHERE content_id = $12", content.Location.X, content.Location.Y, content.Location.Z, content.Rotation.Roll, content.Rotation.Pitch, content.Rotation.Yaw, content.Size.Width, content.Size.Height, content.TextType, content.TextURL, content.StyleURL, contentId)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}

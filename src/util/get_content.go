@@ -1,57 +1,32 @@
-package controller
+package util
 
 import (
 	"errors"
-	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 	"github.com/kajiLabTeam/mr-platform-contents-server/model"
 )
 
-func GetContent(c *gin.Context) {
-	// RequestGetContents型のデータを取得
-	var req common.RequestGetContents
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+func GetContent(contentId string) (common.Content, error) {
+	contentType, err := getDataType(contentId)
+	if err != nil {
+		return common.Content{}, err
 	}
-
-	// 返すデータの作成
-	var res []common.Content
-
-	for index := range req.ContentIds {
-		contentType, err := getDataType(req.ContentIds[index])
+	switch contentType {
+	case "html2d":
+		content, err := getDataFromHtml2d(contentId)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
+			return common.Content{}, err
 		}
-		var tmp interface{}
-		switch contentType {
-		case "html2d":
-			content, err := getDataFromHtml2d(req.ContentIds[index])
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-				return
-			}
-			if content == (common.Html2d{}) {
-				continue
-			}
-			tmp = content
-
-		default:
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid content type"})
-			return
-		}
-
-		res = append(res, common.Content{
-			ContentId:   req.ContentIds[index],
+		return common.Content{
+			ContentId:   contentId,
 			ContentType: contentType,
-			Content:     tmp,
-		})
-	}
+			Content:     content,
+		}, nil
 
-	c.JSON(http.StatusOK, res)
+	default:
+		return common.Content{}, errors.New("invalid content type")
+	}
 }
 
 func getDataType(contentId string) (string, error) {
