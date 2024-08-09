@@ -1,15 +1,9 @@
 package common
 
-type AbsoluteAddress struct {
-	X float64 `json:"x"`
-	Y float64 `json:"y"`
-	Z float64 `json:"z"`
-}
-
 type Location struct {
-	X float64 `json:"x"`
-	Y float64 `json:"y"`
-	Z float64 `json:"z"`
+	Lat    float64 `json:"lat"`
+	Lon    float64 `json:"lon"`
+	Height float64 `json:"height"`
 }
 
 type Rotation struct {
