@@ -93,7 +93,7 @@ func getHtml2dId(contentId string) (string, error) {
 func insertLogHtml2dContent(html2dId string, contentId string, content common.Html2d) error {
 	// uuidを生成
 	uuid := uuid.New()
-	_, err := db.Exec("INSERT INTO log_html2d (id, html2d_id, content_id, location_lat, location_lon, location_height, rotation_roll, rotation_pitch, rotation_yaw, size_width, size_height, text_type, text_url, style_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)", uuid.String(), html2dId, contentId, content.Location.Lat, content.Location.Lon, content.Location.Height, content.Rotation.Roll, content.Rotation.Pitch, content.Rotation.Yaw, content.Size.Width, content.Size.Height, content.TextType, content.TextURL, content.StyleURL)
+	_, err := db.Exec("INSERT INTO log_html2d (id, html2d_id, content_id, location_lat, location_lon, location_height, rotation_roll, rotation_pitch, rotation_yaw, size_width, size_height, text_type, text_url, style_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)", uuid.String(), html2dId, contentId, content.Location.Lat, content.Location.Lon, content.Location.Height, content.Rotation.Roll, content.Rotation.Pitch, content.Rotation.Yaw, content.Size.Width, content.Size.Height, content.TextType, content.TextURL, content.StyleURL)
 	if err != nil {
 		return err
 	}
