@@ -1,5 +1,9 @@
 package common
 
+import (
+	"github.com/uber/h3-go/v4"
+)
+
 type Location struct {
 	Lat    float64 `json:"lat"`
 	Lon    float64 `json:"lon"`
@@ -79,4 +83,15 @@ type SQLHtml2d struct {
 	TextType  string
 	TextURL   string
 	StyleURL  string
+}
+
+type CellAndRes struct {
+	Res  int
+	Cell h3.Cell
+}
+
+type Neo4jConfiguration struct {
+	URL      string
+	Username string
+	Password string
 }

@@ -8,6 +8,8 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.0.0
 	github.com/google/uuid v1.6.0
 	github.com/lib/pq v1.10.9
+	github.com/neo4j/neo4j-go-driver/v5 v5.23.1
+	github.com/uber/h3-go/v4 v4.1.1
 )
 
 require (

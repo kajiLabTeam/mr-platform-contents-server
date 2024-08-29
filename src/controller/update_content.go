@@ -8,7 +8,7 @@ import (
 	"github.com/go-viper/mapstructure/v2"
 	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 	"github.com/kajiLabTeam/mr-platform-contents-server/model"
-	"github.com/kajiLabTeam/mr-platform-contents-server/util"
+	"github.com/kajiLabTeam/mr-platform-contents-server/service"
 )
 
 func UpdateContent(c *gin.Context) {
@@ -44,7 +44,7 @@ func UpdateContent(c *gin.Context) {
 	}
 
 	// コンテンツの取得
-	content, err := util.GetContent(req.ContentId)
+	content, err := service.GetContent(req.ContentId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
