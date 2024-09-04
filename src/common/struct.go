@@ -4,6 +4,7 @@ type Location struct {
 	Lat    float64 `json:"lat"`
 	Lon    float64 `json:"lon"`
 	Height float64 `json:"height"`
+	Scale  string  `json:"scale"`
 }
 
 type Rotation struct {
@@ -25,6 +26,7 @@ type PublicSpace struct {
 type Content struct {
 	ContentId   string      `json:"contentId"`
 	ContentType string      `json:"contentType"`
+	Location    Location    `json:"location"`
 	Content     interface{} `json:"content"`
 }
 
@@ -35,18 +37,21 @@ type RequestGetContents struct {
 type RequestCreateContent struct {
 	LayerId     string      `json:"layerId"`
 	ContentType string      `json:"contentType"`
+	Location    Location    `json:"location"`
 	Content     interface{} `json:"content"`
 }
 
 type ResponseCreateContent struct {
 	ContentId   string      `json:"contentId"`
 	ContentType string      `json:"contentType"`
+	Location    Location    `json:"location"`
 	Content     interface{} `json:"content"`
 }
 
 type RequestUpdateContent struct {
 	ContentId   string      `json:"contentId"`
 	ContentType string      `json:"contentType"`
+	Location    Location    `json:"location"`
 	Content     interface{} `json:"content"`
 }
 
@@ -63,20 +68,22 @@ type ResponseGetLayerContentIds struct {
 }
 
 type Html2d struct {
-	Location Location `json:"location"`
-	Rotation Rotation `json:"rotation"`
-	Size     Size     `json:"size"`
-	TextType string   `json:"textType"`
-	TextURL  string   `json:"textURL"`
-	StyleURL string   `json:"styleURL"`
+	Size     Size   `json:"size"`
+	TextType string `json:"textType"`
+	TextURL  string `json:"textURL"`
+	StyleURL string `json:"styleURL"`
 }
 
 type SQLHtml2d struct {
 	ContentId string
-	Location  Location
-	Rotation  Rotation
 	Size      Size
 	TextType  string
 	TextURL   string
 	StyleURL  string
+}
+
+type Neo4jConfiguration struct {
+	URL      string
+	Username string
+	Password string
 }

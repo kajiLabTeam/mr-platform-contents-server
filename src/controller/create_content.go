@@ -1,14 +1,12 @@
 package controller
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-viper/mapstructure/v2"
 	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 	"github.com/kajiLabTeam/mr-platform-contents-server/model"
-	"github.com/kajiLabTeam/mr-platform-contents-server/util"
+	"github.com/kajiLabTeam/mr-platform-contents-server/service"
 )
 
 func CreateContent(c *gin.Context) {
@@ -35,7 +33,7 @@ func CreateContent(c *gin.Context) {
 	// type の確認
 	switch req.ContentType {
 	case "html2d":
-		contentId, err = createHtml2dContent(req)
+		contentId, err = service.CreateHtml2dContent(req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -46,8 +44,22 @@ func CreateContent(c *gin.Context) {
 		return
 	}
 
+	// content_location に追加
+	err = model.InsertContentLocation(req.Location, contentId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Neo4jに関係性の追加
+	err = service.InsertDBH3Relation(req.Location.Lat, req.Location.Lon, contentId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	// コンテンツの取得
-	content, err := util.GetContent(contentId)
+	content, err := service.GetContent(contentId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -55,34 +67,4 @@ func CreateContent(c *gin.Context) {
 
 	// 201を返す
 	c.JSON(http.StatusCreated, content)
-}
-
-func createHtml2dContent(req common.RequestCreateContent) (contentId string, err error) {
-	// 同一コンテンツが存在するか確認
-	// html2dContent（common.Html2d）にreq.Content(Interface)を変換
-	var html2dContent common.Html2d
-	if err := mapstructure.Decode(req.Content, &html2dContent); err != nil {
-		return "", err
-	}
-
-	isExist, err := model.IsExistHtml2dContentExceptId(html2dContent)
-	if err != nil {
-		return "", err
-	}
-	if isExist {
-		return "", errors.New("the same content already exists")
-	}
-
-	// コンテンツを作成
-	contentId, err = model.CreateContent(req.ContentType)
-	if err != nil {
-		return "", err
-	}
-
-	// コンテンツを作成
-	if err := model.CreateHtml2dContent(contentId, html2dContent); err != nil {
-		return "", err
-	}
-
-	return contentId, nil
 }

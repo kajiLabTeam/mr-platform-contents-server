@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kajiLabTeam/mr-platform-contents-server/common"
-	"github.com/kajiLabTeam/mr-platform-contents-server/util"
+	"github.com/kajiLabTeam/mr-platform-contents-server/service"
 )
 
 func GetContents(c *gin.Context) {
@@ -20,7 +20,7 @@ func GetContents(c *gin.Context) {
 	var res []common.Content
 
 	for index := range req.ContentIds {
-		content, err := util.GetContent(req.ContentIds[index])
+		content, err := service.GetContent(req.ContentIds[index])
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

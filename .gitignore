@@ -22,3 +22,6 @@ go.work
 go.work.sum
 
 docker/go/log/*
+
+*/zzz/*
+zzz.*

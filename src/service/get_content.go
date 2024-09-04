@@ -1,4 +1,4 @@
-package util
+package service
 
 import (
 	"errors"
@@ -27,6 +27,13 @@ func GetContent(contentId string) (content common.Content, err error) {
 	default:
 		return common.Content{}, errors.New("invalid content type")
 	}
+
+	location, err := model.GetCurrentContentLocation(contentId)
+	if err != nil {
+		return common.Content{}, err
+	}
+
+	content.Location = location
 
 	return content, nil
 }
