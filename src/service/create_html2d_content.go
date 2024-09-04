@@ -8,32 +8,32 @@ import (
 	"github.com/kajiLabTeam/mr-platform-contents-server/model"
 )
 
-func CreateHtml2dContent(req common.RequestCreateContent) (contentId string, lat, lon float64, err error) {
+func CreateHtml2dContent(req common.RequestCreateContent) (contentId string, err error) {
 	// 同一コンテンツが存在するか確認
 	// html2dContent（common.Html2d）にreq.Content(Interface)を変換
 	var html2dContent common.Html2d
 	if err := mapstructure.Decode(req.Content, &html2dContent); err != nil {
-		return "", 0, 0, err
+		return "", err
 	}
 
 	isExist, err := model.IsExistHtml2dContentExceptId(html2dContent)
 	if err != nil {
-		return "", 0, 0, err
+		return "", err
 	}
 	if isExist {
-		return "", 0, 0, errors.New("the same content already exists")
+		return "", errors.New("the same content already exists")
 	}
 
 	// コンテンツを作成
 	contentId, err = model.CreateContent(req.ContentType)
 	if err != nil {
-		return "", 0, 0, err
+		return "", err
 	}
 
 	// コンテンツを作成
 	if err := model.CreateHtml2dContent(contentId, html2dContent); err != nil {
-		return "", 0, 0, err
+		return "", err
 	}
 
-	return contentId, html2dContent.Location.Lat, html2dContent.Location.Lon, nil
+	return contentId, nil
 }

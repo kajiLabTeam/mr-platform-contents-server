@@ -29,12 +29,11 @@ func CreateContent(c *gin.Context) {
 	}
 
 	var contentId string
-	var lat, lon float64
 
 	// type の確認
 	switch req.ContentType {
 	case "html2d":
-		contentId, lat, lon, err = service.CreateHtml2dContent(req)
+		contentId, err = service.CreateHtml2dContent(req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -45,7 +44,15 @@ func CreateContent(c *gin.Context) {
 		return
 	}
 
-	err = service.InsertDBH3Relation(lat, lon, contentId)
+	// content_location に追加
+	err = model.InsertContentLocation(req.Location, contentId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Neo4jに関係性の追加
+	err = service.InsertDBH3Relation(req.Location.Lat, req.Location.Lon, contentId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

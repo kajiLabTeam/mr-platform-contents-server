@@ -28,6 +28,13 @@ func GetContent(contentId string) (content common.Content, err error) {
 		return common.Content{}, errors.New("invalid content type")
 	}
 
+	location, err := model.GetCurrentContentLocation(contentId)
+	if err != nil {
+		return common.Content{}, err
+	}
+
+	content.Location = location
+
 	return content, nil
 }
 
