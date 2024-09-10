@@ -33,7 +33,7 @@ func CreateHtml2dContent(contentId string, content common.Html2d) error {
 	return nil
 }
 
-func IsExistHtml2dContent(contentId string) (bool, error) {
+func ExistHtml2dContent(contentId string) (bool, error) {
 	row := db.QueryRow("SELECT size_width, size_height, text_type, text_url, style_url FROM html2d WHERE content_id = $1", contentId)
 
 	var content common.SQLHtml2d
@@ -48,7 +48,7 @@ func IsExistHtml2dContent(contentId string) (bool, error) {
 }
 
 // id以外を比較して同一のコンテンツが存在するか確認
-func IsExistHtml2dContentExceptId(checkContent common.Html2d) (bool, error) {
+func ExistHtml2dContentExceptId(checkContent common.Html2d) (bool, error) {
 	row := db.QueryRow("SELECT  size_width, size_height, text_type, text_url, style_url FROM html2d WHERE size_width = $1 AND size_height = $2 AND text_type = $3 AND text_url = $4 AND style_url = $5", checkContent.Size.Width, checkContent.Size.Height, checkContent.TextType, checkContent.TextURL, checkContent.StyleURL)
 
 	var content common.SQLHtml2d

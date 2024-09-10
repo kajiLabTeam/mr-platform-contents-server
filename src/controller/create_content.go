@@ -18,12 +18,12 @@ func CreateContent(c *gin.Context) {
 	}
 
 	// レイヤーがあるか確認
-	isExist, err := model.IsExistLayer(req.LayerId)
+	exist, err := model.ExistLayer(req.LayerId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	if !isExist {
+	if !exist {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid layer id"})
 		return
 	}

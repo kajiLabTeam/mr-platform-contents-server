@@ -16,11 +16,11 @@ func CreateHtml2dContent(req common.RequestCreateContent) (contentId string, err
 		return "", err
 	}
 
-	isExist, err := model.IsExistHtml2dContentExceptId(html2dContent)
+	exist, err := model.ExistHtml2dContentExceptId(html2dContent)
 	if err != nil {
 		return "", err
 	}
-	if isExist {
+	if exist {
 		return "", errors.New("the same content already exists")
 	}
 

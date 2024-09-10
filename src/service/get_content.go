@@ -40,11 +40,11 @@ func GetContent(contentId string) (content common.Content, err error) {
 
 func getDataType(contentId string) (contentType string, err error) {
 	// データが存在するか確認
-	isExist, err := model.IsExistContentId(contentId)
+	exist, err := model.ExistContentId(contentId)
 	if err != nil {
 		return "", err
 	}
-	if !isExist {
+	if !exist {
 		return "", errors.New("contentId does not exist")
 	}
 
@@ -58,11 +58,11 @@ func getDataType(contentId string) (contentType string, err error) {
 
 func getDataFromHtml2d(contentId string) (content common.Html2d, err error) {
 	// データが存在するか確認
-	isExist, err := model.IsExistContentId(contentId)
+	exist, err := model.ExistContentId(contentId)
 	if err != nil {
 		return common.Html2d{}, err
 	}
-	if !isExist {
+	if !exist {
 		return common.Html2d{}, nil
 	}
 

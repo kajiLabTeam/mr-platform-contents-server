@@ -7,11 +7,11 @@ import (
 	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 )
 
-func IsExistContentId(contentId string) (bool, error) {
+func ExistContentId(contentId string) (bool, error) {
 	row := db.QueryRow("SELECT id FROM contents WHERE id = $1", contentId)
 
-	var content common.Content
-	if err := row.Scan(&content.ContentId); err != nil {
+	var content string
+	if err := row.Scan(&content); err != nil {
 		if err == sql.ErrNoRows {
 			// No rows were returned, return false and no error
 			return false, nil
