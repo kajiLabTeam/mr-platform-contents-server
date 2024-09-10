@@ -2,15 +2,13 @@ package model
 
 import (
 	"database/sql"
-
-	"github.com/kajiLabTeam/mr-platform-contents-server/common"
 )
 
-func IsExistLayer(layerId string) (bool, error) {
+func ExistLayer(layerId string) (bool, error) {
 	row := db.QueryRow("SELECT id FROM layer WHERE id = $1", layerId)
 
-	var space common.PublicSpace
-	if err := row.Scan(&space.LayerId); err != nil {
+	var layer string
+	if err := row.Scan(&layer); err != nil {
 		if err == sql.ErrNoRows {
 			// No rows were returned, return false and no error
 			return false, nil

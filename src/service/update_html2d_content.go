@@ -16,11 +16,11 @@ func UpdateHtml2dContent(req common.RequestUpdateContent) (bool, error) {
 	}
 
 	// コンテンツがあるか確認
-	isExist, err := model.IsExistHtml2dContent(req.ContentId)
+	exist, err := model.ExistHtml2dContent(req.ContentId)
 	if err != nil {
 		return false, err
 	}
-	if !isExist {
+	if !exist {
 		return false, errors.New("content does not exist")
 	}
 
