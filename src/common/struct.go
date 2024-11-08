@@ -14,12 +14,8 @@ type Rotation struct {
 }
 
 type Size struct {
-	Width  string `json:"width"`
-	Height string `json:"height"`
-}
-
-type PublicSpace struct {
-	LayerId string `json:"id"`
+	Width  int `json:"width"`
+	Height int `json:"height"`
 }
 
 // ResponseGetContentsのときにはこれの配列を渡す
@@ -71,7 +67,13 @@ type Html2d struct {
 	Size     Size   `json:"size"`
 	TextType string `json:"textType"`
 	TextURL  string `json:"textURL"`
-	StyleURL string `json:"styleURL"`
+}
+
+type ReturnHtml2d struct {
+	Size     Size   `json:"size"`
+	TextType string `json:"textType"`
+	TextURL  string `json:"textURL"`
+	ImgURL   string `json:"imgURL"`
 }
 
 type SQLHtml2d struct {
@@ -79,7 +81,6 @@ type SQLHtml2d struct {
 	Size      Size
 	TextType  string
 	TextURL   string
-	StyleURL  string
 }
 
 type Neo4jConfiguration struct {

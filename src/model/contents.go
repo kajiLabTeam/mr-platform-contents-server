@@ -49,9 +49,9 @@ func GetContent(contentId string) (common.Content, error) {
 	return content, nil
 }
 
-func CreateContent(contentType string) (string, error) {
+func CreateContent(layerId, contentType string) (string, error) {
 	uuid := uuid.New()
-	_, err := db.Exec("INSERT INTO contents (id, type) VALUES ($1, $2)", uuid.String(), contentType)
+	_, err := db.Exec("INSERT INTO contents (id,layer_id, type) VALUES ($1, $2, $3)", uuid.String(), layerId, contentType)
 	if err != nil {
 		return "", err
 	}
