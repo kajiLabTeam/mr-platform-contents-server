@@ -25,3 +25,5 @@ docker/go/log/*
 
 */zzz/*
 zzz.*
+
+.DS_Store

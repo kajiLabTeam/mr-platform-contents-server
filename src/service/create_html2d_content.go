@@ -25,7 +25,19 @@ func CreateHtml2dContent(req common.RequestCreateContent) (contentId string, err
 	}
 
 	// コンテンツを作成
-	contentId, err = model.CreateContent(req.ContentType)
+	contentId, err = model.CreateContent(req.LayerId, req.ContentType)
+	if err != nil {
+		return "", err
+	}
+
+	// 画像の作成
+	htmlPng, err := CreateScreenShot(int64(html2dContent.Size.Width), int64(html2dContent.Size.Height), html2dContent.TextURL)
+	if err != nil {
+		return "", err
+	}
+
+	// 画像の保存
+	err = model.MinioPostPng("html2d", contentId, htmlPng)
 	if err != nil {
 		return "", err
 	}

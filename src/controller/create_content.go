@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -65,6 +66,13 @@ func CreateContent(c *gin.Context) {
 		return
 	}
 
+	// contentをJSON文字列に変換
+	contentStr, err := json.Marshal(content)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	// 201を返す
-	c.JSON(http.StatusCreated, content)
+	c.Data(http.StatusCreated, "text", contentStr)
 }

@@ -1,9 +1,16 @@
 # goのバージョン
-FROM golang:1.22.5-alpine3.20
+FROM golang:1.23.2-alpine
 
 # OSのインストール済みのパッケージをバージョンアップ&必要なパッケージをインストール
 RUN apk upgrade --update && \
-    apk --no-cache add git gcc musl-dev
+    apk --no-cache add git gcc musl-dev \
+    chromium \
+    fontconfig \
+    font-noto-cjk \
+    font-noto-cjk-extra 
+
+# フォントの設定
+RUN fc-cache -fv
 
 # ワーキングディレクトリの設定
 WORKDIR /go/src/app/
